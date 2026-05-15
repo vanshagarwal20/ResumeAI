@@ -1,0 +1,61 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: section-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/resumeai_section?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:1234}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+jwt:
+  secret: ${JWT_SECRET:cmVzdW1lYWktc3VwZXItc2VjcmV0LWtleS1mb3ItaHMyNTYtanN0LWZvci1kZXZlbG9wbWVudA==}
+
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+
+logging:
+  level:
+    com.resumeai.sectionservice: DEBUG
+    org.springframework.security: WARN

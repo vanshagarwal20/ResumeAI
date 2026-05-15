@@ -1,0 +1,89 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway-service
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+      routes:
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/v1/auth,/api/v1/auth/**,/oauth2/**,/login/oauth2/**
+
+        - id: resume-service
+          uri: lb://RESUME-SERVICE
+          predicates:
+            - Path=/api/v1/resumes,/api/v1/resumes/**
+
+        - id: section-service
+          uri: lb://SECTION-SERVICE
+          predicates:
+            - Path=/api/v1/sections,/api/v1/sections/**
+
+        - id: ai-service
+          uri: lb://AI-SERVICE
+          predicates:
+            - Path=/api/v1/ai,/api/v1/ai/**
+
+        - id: template-service
+          uri: lb://TEMPLATE-SERVICE
+          predicates:
+            - Path=/api/v1/templates,/api/v1/templates/**
+
+        - id: export-service
+          uri: lb://EXPORT-SERVICE
+          predicates:
+            - Path=/api/v1/exports,/api/v1/exports/**
+
+        - id: jobmatch-service
+          uri: lb://JOBMATCH-SERVICE
+          predicates:
+            - Path=/api/v1/job-matches,/api/v1/job-matches/**
+
+        - id: notification-service
+          uri: lb://NOTIFICATION-SERVICE
+          predicates:
+            - Path=/api/v1/notifications,/api/v1/notifications/**
+
+      globalcors:
+        cors-configurations:
+          "[/**]":
+            allowedOrigins:
+              - "http://localhost:3000"
+              - "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
