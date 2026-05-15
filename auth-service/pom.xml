@@ -22,6 +22,10 @@
     <packaging>jar</packaging>
 
     <properties>
+        <jacoco.version>0.8.14</jacoco.version>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+
         <java.version>17</java.version>
         <jjwt.version>0.11.5</jjwt.version>
         <modelmapper.version>3.2.0</modelmapper.version>
@@ -167,6 +171,27 @@
 
     <build>
         <plugins>
+
+            <plugin>
+    <groupId>org.jacoco</groupId>
+    <artifactId>jacoco-maven-plugin</artifactId>
+    <version>${jacoco.version}</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>prepare-agent</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+                <goal>report</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
 
             <!-- Creates executable Spring Boot jar -->
             <plugin>
