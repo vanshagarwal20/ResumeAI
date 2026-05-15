@@ -1,0 +1,88 @@
+# ============================================================
+# resume-service - Application Configuration
+# This version includes:
+# 1. Eureka client registration
+# 2. Swagger / OpenAPI setup
+# 3. section-service integration
+# ============================================================
+
+server:
+  port: 8082
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: resume-service
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:resumeai123}
+      database: 2
+      lettuce:
+        pool:
+          max-active: 20
+          max-idle: 10
+          min-idle: 2
+          max-wait: 5000ms
+        shutdown-timeout: 200ms
+      connect-timeout: 5000ms
+
+  cache:
+    type: redis
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/resumeai_resume?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:1234}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+
+jwt:
+  secret: ${JWT_SECRET:cmVzdW1lYWktc3VwZXItc2VjcmV0LWtleS1mb3ItaHMyNTYtanN0LWZvci1kZXZlbG9wbWVudA==}
+
+services:
+  auth-service-url: ${AUTH_SERVICE_URL:http://localhost:8081}
+  section-service-url: ${SECTION_SERVICE_URL:http://localhost:8083}
+
+resume:
+  free-tier-max-resumes: 3
+
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+
+logging:
+  level:
+    com.resumeai.resumeservice: DEBUG
+    org.springframework.security: WARN
