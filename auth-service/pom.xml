@@ -22,11 +22,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <jacoco.version>0.8.14</jacoco.version>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-        <sonar.coverage.jacoco.xmlReportPaths>${project.basedir}/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-
         <java.version>17</java.version>
+        <jacoco.version>0.8.14</jacoco.version>
         <jjwt.version>0.11.5</jjwt.version>
         <modelmapper.version>3.2.0</modelmapper.version>
         <!-- Spring Cloud version used for Eureka client -->
@@ -92,10 +89,10 @@
 
         <!-- Swagger / OpenAPI UI for API testing and documentation -->
         <dependency>
-		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-		    <version>2.5.0</version>
-		</dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
 
         <!-- MySQL JDBC driver -->
         <dependency>
@@ -103,14 +100,14 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
-        
-        <!-- ── Redis: Spring Data Redis (Lettuce driver) ── -->
+
+        <!-- Redis: Spring Data Redis (Lettuce driver) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
 
-        <!-- ── Redis: Connection pool support for Lettuce ── -->
+        <!-- Redis: Connection pool support for Lettuce -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
@@ -172,27 +169,6 @@
     <build>
         <plugins>
 
-            <plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>${jacoco.version}</version>
-    <executions>
-        <execution>
-            <goals>
-                <goal>prepare-agent</goal>
-            </goals>
-        </execution>
-        <execution>
-            <id>report</id>
-            <phase>verify</phase>
-            <goals>
-                <goal>report</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
-
-
             <!-- Creates executable Spring Boot jar -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -222,6 +198,26 @@
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
