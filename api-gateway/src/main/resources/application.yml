@@ -57,6 +57,7 @@ spring:
             allowedOrigins:
               - "http://localhost:3000"
               - "http://localhost:5173"
+              - "https://resume-ai-frontend-black.vercel.app"
             allowedMethods:
               - GET
               - POST
